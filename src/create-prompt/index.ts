@@ -31,8 +31,9 @@ const BASE_ALLOWED_TOOLS = [
   "Write",
   "mcp__github_file_ops__commit_files",
   "mcp__github_file_ops__delete_files",
+  "WebSearch"
 ];
-const DISALLOWED_TOOLS = ["WebSearch", "WebFetch"];
+const DISALLOWED_TOOLS = ["WebFetch"];
 
 export function buildAllowedToolsString(
   eventData: EventData,
