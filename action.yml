@@ -38,6 +38,10 @@ inputs:
     default: ""
 
   # Auth configuration
+  use_max:
+    description: "Use Max subscription when on GitHub Actions runner"
+    required: false
+    default: "true"
   anthropic_api_key:
     description: "Anthropic API key (required for direct API, not needed for Bedrock/Vertex)"
     required: false
@@ -56,7 +60,7 @@ inputs:
   timeout_minutes:
     description: "Timeout in minutes for execution"
     required: false
-    default: "30"
+    default: "60"
 
 outputs:
   execution_file:
@@ -94,7 +98,7 @@ runs:
     - name: Run Claude Code
       id: claude-code
       if: steps.prepare.outputs.contains_trigger == 'true'
-      uses: anthropics/claude-code-base-action@beta
+      uses: pauloportell/claude-code-base-action@main
       with:
         prompt_file: /tmp/claude-prompts/claude-prompt.txt
         allowed_tools: ${{ env.ALLOWED_TOOLS }}
@@ -102,6 +106,7 @@ runs:
         timeout_minutes: ${{ inputs.timeout_minutes }}
         model: ${{ inputs.model || inputs.anthropic_model }}
         mcp_config: ${{ steps.prepare.outputs.mcp_config }}
+        use_max: ${{ inputs.use_max }}
         use_bedrock: ${{ inputs.use_bedrock }}
         use_vertex: ${{ inputs.use_vertex }}
         anthropic_api_key: ${{ inputs.anthropic_api_key }}
